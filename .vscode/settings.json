@@ -1,0 +1,19 @@
+{
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.eol": "\n",
+
+  "go.lintTool": "golangci-lint-v2",
+  "go.lintFlags": ["--fast-only"],
+  "gopls": { "formatting.gofumpt": true },
+  "[go]": {
+    "editor.codeActionsOnSave": { "source.organizeImports": "explicit" }
+  },
+
+  "[json]": { "editor.defaultFormatter": "vscode.json-language-features" },
+  "[jsonc]": { "editor.defaultFormatter": "vscode.json-language-features" },
+  "[yaml]": { "editor.defaultFormatter": "redhat.vscode-yaml" },
+  "[github-actions-workflow]": { "editor.defaultFormatter": "redhat.vscode-yaml" },
+  "[markdown]": { "files.trimTrailingWhitespace": false }
+}

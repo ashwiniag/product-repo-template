@@ -1,0 +1,72 @@
+# Runs on your machine at commit and push time, and in CI on every PR.
+# Install once per clone:  pre-commit install
+# Run on everything:       pre-commit run --all-files
+# Hooks are pinned to commit SHAs. Dependabot keeps them up to date.
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
+default_stages: [pre-commit]
+minimum_pre_commit_version: "4.0.0"
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
+    hooks:
+      - id: no-commit-to-branch  # commit on a branch, never on main
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: detect-private-key
+      - id: check-json
+        exclude: ^\.vscode/  # VS Code files are JSON with comments
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: 83d9cd684c87d95d656c1458ef04895a7f1cbd8e  # frozen: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: cba56bcde1fdd01c1deb3f945e69764c291a6530  # frozen: v1.38.0
+    hooks:
+      - id: yamllint
+        args: [--strict]
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: 914e7df21a07ef503a81201c76d2b11c789d3fca  # frozen: v1.7.12
+    hooks:
+      - id: actionlint
+
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: 06a39750ec31860bb44f2acf67182c40016cd1e7  # frozen: v1.32.0
+    hooks:
+      - id: zizmor
+
+  # Go hooks run only when Go files change; config-verify when .golangci.yml changes.
+  # The first run builds golangci-lint, which needs Go 1.26 or newer.
+  - repo: https://github.com/golangci/golangci-lint
+    rev: 25c5369a93aacb8cccea0d46e1569ca4a194564d  # frozen: v2.15.0
+    hooks:
+      - id: golangci-lint-config-verify
+      - id: golangci-lint-full
+
+  - repo: local
+    hooks:
+      - id: conventional-commit
+        name: commit message follows Conventional Commits
+        entry: scripts/check-commit-msg.sh
+        language: script
+        stages: [commit-msg]
+      - id: branch-name
+        name: branch name follows type/short-name
+        entry: scripts/check-branch-name.sh
+        language: script
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]

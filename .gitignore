@@ -1,0 +1,54 @@
+# ---- Secrets: never commit these ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+*.kubeconfig
+kubeconfig
+.kube/
+credentials.json
+*credentials*.json
+service-account*.json
+*.secret
+secrets/
+.netrc
+.npmrc
+.pypirc
+.docker/config.json
+
+# ---- Go ----
+bin/
+dist/
+*.exe
+*.test
+*.out
+*.prof
+coverage.*
+go.work
+go.work.sum
+vendor/
+
+# ---- Editors and OS ----
+# Share the team's VS Code files, keep personal ones out. The first line also
+# overrides a global gitignore that ignores the whole .vscode/ folder.
+!.vscode/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+.DS_Store
+
+# ---- Local-only files ----
+.claude/settings.local.json
+CLAUDE.local.md
+*.local
+*.log
+tmp/

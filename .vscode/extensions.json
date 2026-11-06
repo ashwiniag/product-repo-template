@@ -1,0 +1,12 @@
+{
+  // VS Code ignores entries with "@version", so list IDs only.
+  // Versions that matter are pinned in tools (.pre-commit-config.yaml), not here.
+  "recommendations": [
+    "golang.go",
+    "redhat.vscode-yaml",
+    "editorconfig.editorconfig",
+    "github.vscode-github-actions",
+    "github.vscode-pull-request-github",
+    "anthropic.claude-code"
+  ]
+}

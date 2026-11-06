@@ -1,0 +1,56 @@
+name: checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pre-commit:
+    name: pre-commit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e  # v7.0.0
+        with:
+          go-version: stable  # switch to go-version-file: go.mod once it exists
+          cache: false
+      - run: pip install pre-commit==4.7.0
+      - name: Run hooks on all files
+        env:
+          SKIP: no-commit-to-branch  # CI checks out main on push; the ruleset protects main
+          GH_TOKEN: ${{ github.token }}  # lets zizmor run its online checks, such as impostor commits
+        run: pre-commit run --all-files --show-diff-on-failure --color=always
+
+  secrets:
+    name: secrets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0  # scan the whole history, not just the latest commit
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e  # v7.0.0
+        with:
+          go-version: stable
+          cache: false
+      - run: go install github.com/zricethezav/gitleaks/v8@v8.30.1
+      - name: Scan every commit for secrets
+        run: gitleaks git --redact --no-banner --verbose .

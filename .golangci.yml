@@ -1,0 +1,40 @@
+# golangci-lint v2. Used by VS Code (fast linters on save), pre-commit and CI.
+# Check this file: golangci-lint config verify
+# Docs: https://golangci-lint.run/docs/configuration/file/
+version: "2"
+
+linters:
+  default: standard  # errcheck, govet, ineffassign, staticcheck, unused
+  enable:
+    - bodyclose  # HTTP response bodies are closed
+    - copyloopvar  # redundant loop variable copies
+    - errorlint  # errors compared with errors.Is/As, wrapped with %w
+    - gocritic
+    - gosec  # security problems
+    - misspell
+    - noctx  # HTTP requests carry a context
+    - nolintlint  # //nolint comments must name a linter and say why
+    - revive
+    - unconvert
+    - unparam
+    - usestdlibvars
+  settings:
+    errcheck:
+      check-type-assertions: true
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - std-error-handling
+    rules:
+      - path: _test\.go
+        linters: [bodyclose, gosec, noctx, unparam]
+
+formatters:
+  enable:
+    - gofumpt  # same formatter gopls uses in VS Code
+    - goimports

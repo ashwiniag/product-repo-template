@@ -1,0 +1,30 @@
+name: Feature request
+description: Suggest a change or a new capability.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what gets in the way today? Describe the problem, not the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Current workaround
+      description: How do you handle it now, and what does it cost you?
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+  - type: dropdown
+    id: impact
+    attributes:
+      label: How much does this block you?
+      options:
+        - Blocks me from using the product
+        - Costs me time every week
+        - Nice to have
+    validations:
+      required: true

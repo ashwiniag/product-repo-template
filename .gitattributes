@@ -1,0 +1,12 @@
+# Store text with LF line endings, whatever the contributor's OS.
+* text=auto eol=lf
+
+# Binary files: never convert or diff as text.
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+
+go.sum linguist-generated=true
